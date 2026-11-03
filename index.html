@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chroma Key Pro</title>
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="obs.css">
+</head>
+<body>
+<main>
+<header>
+  <h1>🎬 Chroma Key Pro</h1>
+  <p class="sub">Quita cualquier color de fondo en tiempo real: verde, azul, varios colores a la vez o incluso grises.</p>
+</header>
+
+<section>
+  <div class="stage" id="stage">
+    <canvas id="out" width="640" height="480"></canvas>
+    <div class="ph" id="ph">Activa la cámara para empezar</div>
+    <span class="badge" id="badge"></span>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="sec on" data-v="result">Resultado</button>
+    <button class="sec" data-v="matte">Máscara</button>
+    <button class="sec" data-v="orig">Original</button>
+    <span style="flex:1"></span>
+    <button id="btnShot" disabled>📸 Foto</button>
+    <button id="btnRec" disabled>● Grabar</button>
+    <button id="btnObs">🖥️ Modo OBS (Ventana Limpia)</button>
+  </div>
+  <p id="msg"></p>
+</section>
+
+<aside class="panel">
+  <h2>Cámara</h2>
+  <div class="row">
+    <button id="btnCam">Activar cámara</button>
+    <button id="btnFlip" class="sec" disabled>Cambiar</button>
+    <button id="btnTab" style="display:none">↗ Abrir en pestaña nueva</button>
+  </div>
+  <div class="row">
+    <select id="camList" style="flex:1;min-width:0" title="Elegir cámara"><option value="">Cámara predeterminada</option></select>
+  </div>
+  <div class="row">
+    <label class="btn sec">🎞️ Probar con video<input type="file" id="vidSrc" accept="video/*"></label>
+    <select id="q"><option value="640">Calidad: rápida</option><option value="960" selected>Calidad: media</option><option value="1280">Calidad: alta</option></select>
+    <button id="btnMirror" class="sec">Espejo: sí</button>
+  </div>
+
+  <h2>Fondo nuevo</h2>
+  <div class="row">
+    <label class="btn sec">🖼️ Imagen o video<input type="file" id="file" accept="image/*,video/*"></label>
+    <button id="btnClear" class="sec">Quitar</button>
+    <input type="color" id="bgc" value="#1d1d1f" title="Color sólido de fondo">
+  </div>
+
+  <h2>Colores a quitar</h2>
+  <div class="row" id="chips"></div>
+  <div class="row">
+    <input type="color" id="color" value="#00b140">
+    <button class="sec" data-p="#00b140">Verde</button>
+    <button class="sec" data-p="#0047bb">Azul</button>
+    <button class="sec" data-p="#ff00ff">Magenta</button>
+    <button class="sec" id="btnAuto">Auto</button>
+  </div>
+  <div class="row">
+    <button class="sec" id="btnAdd">+ Añadir color</button>
+    <button class="sec" id="btnDel">Quitar color</button>
+  </div>
+  <small class="sub">Toca el video para tomar el color exacto del círculo seleccionado. «Auto» detecta el fondo por los bordes de la imagen. Puedes quitar hasta 5 colores a la vez.</small>
+
+  <h2>Ajuste fino</h2>
+  <div id="sl"></div>
+</aside>
+</main>
+<video id="cam" playsinline muted autoplay style="position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none"></video>
+
+<!--
+  Scripts clásicos (no ES modules) para que la app siga funcionando abriendo
+  el archivo con file://, donde los módulos están bloqueados por CORS.
+  El orden define el orden de inicialización:
+    config -> dom -> engine -> background -> segmentation -> camera
+           -> capture -> obs -> bootstrap -> app
+-->
+<script src="config.js"></script>
+<script src="dom.js"></script>
+<script src="engine.js"></script>
+<script src="background.js"></script>
+<script src="segmentation.js"></script>
+<script src="camera.js"></script>
+<script src="capture.js"></script>
+<script src="obs.js"></script>
+<script src="bootstrap.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
